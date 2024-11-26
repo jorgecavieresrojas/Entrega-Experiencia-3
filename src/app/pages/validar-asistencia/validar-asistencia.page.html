@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon name="arrow-back"></ion-icon>
+        Volver
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="mostrarMenu()">
+        <ion-icon slot="end" name="menu-outline" color="dark" size="large"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Validar Asistencia</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <!-- Botón para validar asistencia -->
+  <ion-button expand="block" (click)="validarAsistencia()">Validar Asistencia</ion-button> <!-- Aquí debería abrirse la cámara para leer QR -->
+  
+  <!-- Botón para ir al listado de asistentes -->
+  <ion-button expand="block" (click)="goToListadoAsistentes()">Listado Asistentes</ion-button> <!-- Acá se muestra la lista de asistentes -->
+
+  <ion-header collapse="condense">
+  </ion-header>
+</ion-content>
+
+<ion-footer>
+  <ion-card>
+    <ion-img src="assets/image.jpg"></ion-img> <!-- Imagen en el pie de página -->
+  </ion-card>
+</ion-footer>

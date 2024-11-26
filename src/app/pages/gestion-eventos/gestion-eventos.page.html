@@ -1,0 +1,38 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon name="arrow-back"></ion-icon>
+        Volver
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="mostrarMenu()">
+        <ion-icon slot="end" name="menu-outline" color="dark" size="large"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Gestion De Eventos</ion-title>
+    </ion-toolbar>
+  </ion-header>
+   <!-- Botón para listado de eventos -->
+   <ion-button expand="block" (click)="goToListadoEventos()">Listado de Eventos</ion-button>
+
+   <!-- Botón para formulario de crear evento -->
+   <ion-button expand="block" (click)="goToCrearEvento()">Crear Evento</ion-button>
+ 
+   <!-- Botón para editar o eliminar evento -->
+   <ion-button expand="block" (click)="goToEditarEliminarEvento()">Editar o Eliminar Evento</ion-button>
+</ion-content>
+
+<ion-footer>
+  <ion-card>
+    <ion-img src="assets/image.jpg"></ion-img>
+  </ion-card>
+</ion-footer>

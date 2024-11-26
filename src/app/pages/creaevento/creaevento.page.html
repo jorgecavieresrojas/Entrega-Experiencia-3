@@ -1,0 +1,47 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon name="arrow-back"></ion-icon>
+        Volver
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="mostrarMenu()">
+        <ion-icon slot="end" name="menu-outline" color="dark" size="large"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Crear Evento</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form (ngSubmit)="crearEvento()">
+    <!-- Nombre del Evento -->
+    <ion-item>
+      <ion-label position="floating">Nombre del Evento</ion-label>
+      <ion-input [(ngModel)]="evento.nombre" name="nombre" required></ion-input>
+    </ion-item>
+
+    <!-- Fecha del Evento -->
+    <ion-item>
+      <ion-label>Fecha del Evento</ion-label>
+      <ion-datetime display-format="MM/DD/YYYY" [(ngModel)]="evento.fecha" name="fecha" required></ion-datetime>
+    </ion-item>
+
+    <!-- Ubicación del Evento -->
+    <ion-item>
+      <ion-label position="floating">Ubicación</ion-label>
+      <ion-input [(ngModel)]="evento.ubicacion" name="ubicacion" required></ion-input>
+    </ion-item>
+
+    <!-- Descripción del Evento -->
+    <ion-item>
+      <ion-label position="floating">Descripción</ion-label>
+      <ion-textarea [(ngModel)]="evento.descripcion" name="descripcion" required></ion-textarea>
+    </ion-item>
+
+    <!-- Botón para crear el evento -->
+    <ion-button expand="block" type="submit">Crear Evento</ion-button>
+  </form>
+</ion-content>

@@ -1,0 +1,21 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button (click)="mostrarMenu()">
+        <ion-icon slot="end" name="menu-outline" color="dark" size="large"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Inicio</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Contenido de la página de inicio -->
+  <p>Bienvenido, {{ username }}!</p>
+</ion-content>
+
+<ion-footer>
+  <ion-card>
+    <ion-img src="assets/image.jpg"></ion-img>
+  </ion-card>
+</ion-footer>

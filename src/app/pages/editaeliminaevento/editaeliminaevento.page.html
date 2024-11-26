@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon name="arrow-back"></ion-icon>
+        Volver
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Editar o Eliminar Evento</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="mostrarMenu()">
+        <ion-icon name="menu"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <!-- Barra de búsqueda -->
+  <ion-searchbar (ionInput)="filtrarEventos($event)" placeholder="Buscar evento"></ion-searchbar>
+
+  <!-- Listado de eventos -->
+  <ion-list>
+    <ion-item *ngFor="let evento of filteredEventos" (click)="opcionesEvento(evento)">
+      <ion-label>
+        <h2>{{ evento.nombre }}</h2>
+        <p>Fecha: {{ evento.fecha }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

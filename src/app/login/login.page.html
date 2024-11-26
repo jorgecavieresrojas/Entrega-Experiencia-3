@@ -1,0 +1,65 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Iniciar Sesión</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-card>
+    <ion-img src="assets/image.jpg"></ion-img>
+  </ion-card>
+  <form (ngSubmit)="loginUser()">
+    <ion-item>
+      <ion-label position="floating">Correo Electrónico</ion-label>
+      <ion-input 
+        type="email" 
+        [(ngModel)]="email" 
+        (ngModelChange)="validateEmail()" 
+        name="email" 
+        required>
+      </ion-input>
+    </ion-item>
+    <!-- Mostrar mensaje de error si el email no es válido -->
+    <ion-text color="danger" *ngIf="emailError">{{ emailError }}</ion-text>
+
+    <ion-item>
+      <ion-label position="floating">Contraseña</ion-label>
+      <ion-input type="password" [(ngModel)]="password" name="password" required></ion-input>
+    </ion-item>
+
+    <!-- El botón se desactiva si el email no es válido -->
+    <ion-button expand="block" type="submit" [disabled]="isButtonDisabled">Iniciar Sesión</ion-button>
+  </form>
+
+  <!-- Botones para registrarse y recuperar contraseña -->
+  <ion-row>
+    <ion-col>
+      <ion-button fill="clear" color="primary" (click)="goToRegistro()">Registro</ion-button>
+    </ion-col>
+    <ion-col>
+      <ion-button fill="clear" color="primary" (click)="goToOlvido()">Olvidé mi contraseña</ion-button>
+    </ion-col>
+  </ion-row>
+</ion-content>
+<ion-footer>
+  <ion-toolbar color="black">
+    <!-- Corregí la ruta del logo aquí -->
+    <ion-img src="assets/img/duoc.png" style="width: 100%; height: auto;"></ion-img>
+    
+    <ion-buttons slot="end">
+      
+      <ion-button fill="clear">
+        <ion-icon name="logo-facebook"></ion-icon>
+      </ion-button>
+
+      <ion-button fill="clear">
+        <ion-icon name="logo-instagram"></ion-icon>
+      </ion-button>
+
+      <ion-button fill="clear">
+        <ion-icon name="logo-youtube"></ion-icon>
+      </ion-button>
+
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>
