@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/listevent"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Editar/Eliminar Evento</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form (ngSubmit)="updateEvent()">
+    <ion-item>
+      <ion-label position="stacked">Nombre</ion-label>
+      <ion-input [(ngModel)]="event.name" name="name" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Fecha</ion-label>
+      <ion-datetime [(ngModel)]="event.date" name="date" required></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Ubicación</ion-label>
+      <ion-input [(ngModel)]="event.location" name="location" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Descripción</ion-label>
+      <ion-textarea [(ngModel)]="event.description" name="description" required></ion-textarea>
+    </ion-item>
+    <ion-item>
+      <ion-label position="stacked">Imagen</ion-label>
+      <ion-input [(ngModel)]="event.image" name="image" required></ion-input>
+    </ion-item>
+    <ion-button expand="block" type="submit">Actualizar</ion-button>
+    <ion-button expand="block" color="danger" (click)="deleteEvent()">
+      Eliminar
+    </ion-button>
+  </form>
+</ion-content>

@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="goBack()">
+        <ion-icon name="arrow-back"></ion-icon>
+        Volver
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="mostrarMenu()">
+        <ion-icon slot="end" name="menu-outline" color="dark" size="large"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Listado De Asistentes</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <!-- Barra de búsqueda -->
+  <ion-searchbar (ionInput)="filtrarAsistentes($event)" placeholder="Buscar asistente o evento"></ion-searchbar>
+
+  <!-- Listado de asistentes -->
+  <ion-list>
+    <ion-item *ngFor="let asistente of filteredAsistentes">
+      <ion-label>
+        <h2>{{ asistente.nombre }}</h2>
+        <p>{{ asistente.evento }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/inicio" text=""></ion-back-button>
+    </ion-buttons>
+    <ion-title>Crear Evento</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form (ngSubmit)="createEvent()">
+    <ion-item>
+      <ion-label position="stacked">Nombre del Evento</ion-label>
+      <ion-input [(ngModel)]="event.name" name="name" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Fecha</ion-label>
+      <ion-datetime [(ngModel)]="event.date" name="date" required></ion-datetime>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Ubicación</ion-label>
+      <ion-input [(ngModel)]="event.location" name="location" required></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Descripción</ion-label>
+      <ion-textarea [(ngModel)]="event.description" name="description" required></ion-textarea>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="stacked">Imagen URL</ion-label>
+      <ion-input [(ngModel)]="event.image" name="image"></ion-input>
+    </ion-item>
+
+    <ion-button expand="block" type="submit">Crear Evento</ion-button>
+  </form>
+</ion-content>
