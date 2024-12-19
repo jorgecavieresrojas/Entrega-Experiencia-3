@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Location } from '@angular/common';
-import { MenuController, AlertController } from '@ionic/angular';
+import { ActivatedRoute, Router } from '@angular/router';
+import { EventService, Event } from '../../services/event.service';
 
 @Component({
   selector: 'app-editaeliminaevento',
@@ -8,79 +8,52 @@ import { MenuController, AlertController } from '@ionic/angular';
   styleUrls: ['./editaeliminaevento.page.scss'],
 })
 export class EditaeliminaeventoPage implements OnInit {
-
-  eventos = [
-    {
-      nombre: 'Evento 1',
-      fecha: '2024-09-10'
-    },
-    {
-      nombre: 'Evento 2',
-      fecha: '2024-09-11'
-    },
-    {
-      nombre: 'Evento 3',
-      fecha: '2024-09-12'
-    }
-  ];
-
-  filteredEventos = this.eventos;
-  searchTerm: string = '';
+  event: Event = {
+    id: 0,
+    name: '',
+    date: '',
+    location: '',
+    description: '',
+    image: '',
+  };
 
   constructor(
-    private location: Location,
-    private menuController: MenuController,
-    private alertController: AlertController
-  ) { }
+    private route: ActivatedRoute,
+    private eventService: EventService,
+    private router: Router
+  ) {}
 
-  ngOnInit() {}
-
-  // Función para regresar a la página anterior
-  goBack() {
-    this.location.back(); // Regresa a la página anterior
+  ngOnInit() {
+    const id = +this.route.snapshot.paramMap.get('id')!;
+    this.eventService.getEventById(id).subscribe(
+      (data) => {
+        this.event = data;
+      },
+      (error) => {
+        console.error('Error al cargar el evento:', error);
+      }
+    );
   }
 
-  // Función para abrir el menú
-  mostrarMenu() {
-    this.menuController.open('first'); // Permite abrir el menú diseñado en el componente app
+  updateEvent() {
+    this.eventService.updateEvent(this.event).subscribe(
+      () => {
+        this.router.navigate(['/listevent']); // Redirigir al listado después de éxito
+      },
+      (error) => {
+        console.error('Error al actualizar el evento:', error);
+      }
+    );
   }
 
-  // Filtrar eventos según el término de búsqueda
-  filtrarEventos(event: any) {
-    const searchTerm = event.target.value.toLowerCase();
-    this.filteredEventos = this.eventos.filter(evento => {
-      return evento.nombre.toLowerCase().includes(searchTerm);
-    });
-  }
-
-  // Función para mostrar las opciones de editar o eliminar
-  async opcionesEvento(evento: any) {
-    const alert = await this.alertController.create({
-      header: 'Acciones',
-      message: `¿Qué deseas hacer con ${evento.nombre}?`,
-      buttons: [
-        {
-          text: 'Editar',
-          handler: () => {
-            console.log('Editar', evento.nombre);
-            // Lógica de edición aquí
-          }
-        },
-        {
-          text: 'Eliminar',
-          role: 'destructive',
-          handler: () => {
-            console.log('Eliminar', evento.nombre);
-            // Lógica de eliminación aquí
-          }
-        },
-        {
-          text: 'Cancelar',
-          role: 'cancel'
-        }
-      ]
-    });
-
-    await alert.present();
+  deleteEvent() {
+    this.eventService.deleteEvent(this.event.id).subscribe(
+      () => {
+        this.router.navigate(['/listevent']); // Redirigir al listado después de eliminar
+      },
+      (error) => {
+        console.error('Error al eliminar el evento:', error);
+      }
+    );
   }
 }

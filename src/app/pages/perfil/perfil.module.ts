@@ -3,17 +3,17 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
-import { RegistroPageRoutingModule } from './registro-routing.module';
-import { RegistroPage } from './registro.page';
+import { PerfilPageRoutingModule } from './perfil-routing.module';
+import { PerfilPage } from './perfil.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
-    ReactiveFormsModule, // Para formularios reactivos
+    ReactiveFormsModule, // Importar este módulo para soporte de formularios reactivos
     IonicModule,
-    RegistroPageRoutingModule,
+    PerfilPageRoutingModule,
   ],
-  declarations: [RegistroPage],
+  declarations: [PerfilPage],
 })
-export class RegistroPageModule {}
+export class PerfilPageModule {}

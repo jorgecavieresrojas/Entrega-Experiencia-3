@@ -1,37 +1,38 @@
-import { Component, OnInit } from '@angular/core';
-import { Location } from '@angular/common';
-import { MenuController } from '@ionic/angular';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { EventService, Event } from '../../services/event.service';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-creaevento',
   templateUrl: './creaevento.page.html',
   styleUrls: ['./creaevento.page.scss'],
 })
-export class CreaeventoPage implements OnInit {
+export class CreaeventoPage {
+  event: Event = {
+    id: 0,
+    name: '',
+    date: '',
+    location: '',
+    description: '',
+    image: '',
+  };
 
-  evento = {
-    nombre: '',
-    fecha: '',
-    ubicacion: '',
-    descripcion: ''
-};
+  constructor(
+    private eventService: EventService,
+    private router: Router,
+    private alertCtrl: AlertController
+  ) {}
 
-  constructor(private location: Location,
-    private menucontroller: MenuController,
-    private router: Router) { }
-
-  ngOnInit() {
+  async createEvent() {
+    this.eventService.createEvent(this.event).subscribe(async () => {
+      const alert = await this.alertCtrl.create({
+        header: 'Éxito',
+        message: 'Evento creado exitosamente.',
+        buttons: ['OK'],
+      });
+      await alert.present();
+      this.router.navigate(['/listevent']);
+    });
   }
-
-    // Método para crear el evento
-    crearEvento() {
-      console.log('Evento creado:', this.evento);
-    }
-    goBack() {
-      this.location.back(); // Regresa a la página anterior
-    }
-    mostrarMenu(){
-      this.menucontroller.open('first'); /*permite abrir el menú diseñado en el componente app*/
-    }
 }

@@ -1,93 +1,111 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { MenuController } from '@ionic/angular';  // Importamos el controlador del menú
+import { map, catchError, tap } from 'rxjs/operators';
 
-interface User {
-  id?: number;
-  name: string;
+export interface User {
+  id: number;
+  username: string;
   email: string;
   password: string;
-  rut: string;  // Añadimos el campo 'rut'
-  image: string | null;
 }
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:3000/users';  // URL de la API simulada para json-server
-  private isAuthenticated = false;
-  private currentUser: User | null = null;
+  private apiUrl = 'http://localhost:3000/users'; // URL de la API JSON Server
+  private isAuthenticated = false; // Estado de autenticación
+  private currentUser: User | null = null; // Usuario actualmente autenticado
 
-  constructor(private http: HttpClient, private menuCtrl: MenuController) {}  // Inyectamos el MenuController
+  constructor(private http: HttpClient) {}
 
   // Método para iniciar sesión
-  login(credentials: { email: string; password: string }): Observable<boolean> {
-    return this.http.get<User[]>(this.apiUrl, {
-      params: {
-        email: credentials.email,
-        password: credentials.password
-      }
-    }).pipe(
-      map(users => {
-        if (users.length > 0) {
-          this.isAuthenticated = true;
-          this.currentUser = users[0];
-          return true;
+  login(usernameOrEmail: string, password: string): Observable<boolean> {
+    return this.http.get<User[]>(this.apiUrl).pipe(
+      map((users) => {
+        const user = users.find(
+          (u) =>
+            (u.username === usernameOrEmail || u.email === usernameOrEmail) &&
+            u.password === password
+        );
+        if (user) {
+          this.currentUser = user;
+          this.isAuthenticated = true; // Marca al usuario como autenticado
         } else {
+          this.currentUser = null;
           this.isAuthenticated = false;
-          return false;
         }
+        return this.isAuthenticated;
+      }),
+      catchError((error) => {
+        console.error('Error al intentar iniciar sesión:', error);
+        this.isAuthenticated = false;
+        return of(false);
       })
     );
   }
 
-  // Método para registrar un nuevo usuario, con el campo 'rut'
-  register(user: { name: string; email: string; password: string; rut: string; image: string | null }): Observable<boolean> {
-    return this.http.post<User>(this.apiUrl, user).pipe(
-      map(() => true)
+  // Método para registrar un usuario
+  register(username: string, email: string, password: string): Observable<User> {
+    const newUser: Omit<User, 'id'> = { username, email, password }; // No enviar ID en la creación
+    return this.http.post<User>(this.apiUrl, newUser).pipe(
+      tap((user) => {
+        console.log('Usuario registrado exitosamente:', user);
+      }),
+      catchError((error) => {
+        console.error('Error al registrar usuario:', error);
+        throw error; // Repropaga el error para manejarlo
+      })
     );
   }
 
-  // Método para actualizar el perfil del usuario
-  updateUserProfile(updatedUser: { name: string; email: string; rut: string; image: string | null }): Observable<boolean> {
-    if (this.currentUser) {
-      // Mantenemos todas las propiedades del usuario actual, incluyendo el password
-      const updatedProfile = {
-        ...this.currentUser,
-        name: updatedUser.name,
-        email: updatedUser.email,
-        rut: updatedUser.rut,  // Aseguramos que el RUT también se actualice
-        image: updatedUser.image
-      };
-  
-      return this.http.patch<User>(`${this.apiUrl}/${this.currentUser.id}`, updatedProfile).pipe(
-        map(() => {
-          // Actualizamos el usuario localmente después de actualizar en el servidor
-          this.currentUser = updatedProfile;
-          return true;
-        })
-      );
-    }
-    return of(false);  // Si no hay un usuario autenticado, retornamos false
+  // Método para obtener el estado de autenticación
+  getAuthStatus(): boolean {
+    return this.isAuthenticated; // Retorna el estado actual de autenticación
   }
 
-  // Obtener la información del perfil del usuario actual
-  getUserProfile(): User | null {
+  // Método para cerrar sesión
+  logout(): void {
+    this.currentUser = null;
+    this.isAuthenticated = false;
+    console.log('Sesión cerrada correctamente.');
+  }
+
+  // Obtener el usuario actualmente autenticado
+  getCurrentUser(): User | null {
     return this.currentUser;
   }
 
-  // Método para verificar si el usuario está autenticado
-  isLoggedIn(): boolean {
-    return this.isAuthenticated;
+  // Obtener usuario por ID
+  getUserById(id: number): Observable<User> {
+    return this.http.get<User>(`${this.apiUrl}/${id}`).pipe(
+      tap((user) => {
+        console.log(`Usuario obtenido por ID (${id}):`, user);
+      }),
+      catchError((error) => {
+        console.error('Error al obtener el usuario por ID:', error);
+        throw error;
+      })
+    );
   }
 
-  // Método para cerrar sesión y cerrar el menú desplegable
-  logout(): void {
-    this.isAuthenticated = false;
-    this.currentUser = null;
-    this.menuCtrl.close();  // Cerramos el menú al cerrar sesión
+  // Método para actualizar la información del usuario
+  updateUser(user: User): Observable<User> {
+    if (!user.id) {
+      throw new Error('El objeto usuario debe contener un campo `id`.');
+    }
+    return this.http.put<User>(`${this.apiUrl}/${user.id}`, user).pipe(
+      tap((updatedUser) => {
+        console.log('Usuario actualizado:', updatedUser);
+        if (this.currentUser && this.currentUser.id === updatedUser.id) {
+          this.currentUser = updatedUser; // Actualiza el usuario actual si coincide
+        }
+      }),
+      catchError((error) => {
+        console.error('Error al actualizar el usuario:', error);
+        throw error;
+      })
+    );
   }
 }

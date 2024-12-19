@@ -1,11 +1,6 @@
 import { Component } from '@angular/core';
-
-interface Opciones{
-  icon: string;
-  name: string;
-  redirecTo: string;
-}
-
+import { MenuController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -13,25 +8,15 @@ interface Opciones{
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
+  constructor(private menu: MenuController, private router: Router) {}
 
-  opciones:Opciones[]=[ 
-    {
-      icon:'book-outline',
-      name: 'Gestion De Eventos',
-      redirecTo:'/gestion-eventos'
-    },
-    {
-      icon:'clipboard-outline',
-      name: 'Validación Asistencia',
-      redirecTo:'/validar-asistencia'
-    },
-    {
-      icon:'exit-outline',
-      name: 'Cerrar Sesión',
-      redirecTo:'/login'
-    },
+  closeMenu() {
+    this.menu.close();
+  }
 
-  ]
-
-  constructor() {}
+  logout() {
+    // Limpia la sesión y redirige al login
+    localStorage.clear(); // Puedes usar otro método según tu implementación
+    this.router.navigate(['/login']);
+  }
 }

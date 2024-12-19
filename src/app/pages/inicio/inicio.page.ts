@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { MenuController } from '@ionic/angular';
-import { AlertController } from '@ionic/angular';
+import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-inicio',
@@ -9,27 +9,32 @@ import { AlertController } from '@ionic/angular';
   styleUrls: ['./inicio.page.scss'],
 })
 export class InicioPage implements OnInit {
-  email: string = '';
-  username: string = ''; // Variable para almacenar lo que está antes del "@"
+  username: string = 'Usuario'; // Valor predeterminado
 
-  constructor(private route: ActivatedRoute,
-              private menucontroller: MenuController,
-              private alertcontroller: AlertController 
+  constructor(
+    private menuController: MenuController,
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   ngOnInit() {
-    // Obtiene el email de la URL
-    this.route.queryParams.subscribe(params => {
-      this.email = params['email'];
-
-      // Extraer la parte antes del "@"
-      this.username = this.email.split('@')[0];
-    })
-
-      
-}
-  mostrarMenu(){
-    this.menucontroller.open('first'); /*permite abrir el menú diseñado en el componente app*/
+    this.loadUserData();
   }
 
+  // Carga los datos del usuario autenticado
+  loadUserData() {
+    const currentUser = this.authService.getCurrentUser();
+    if (currentUser) {
+      this.username = currentUser.username; // Asigna el nombre del usuario autenticado
+    }
+  }
+
+  mostrarMenu() {
+    this.menuController.open('first'); // Abre el menú
+  }
+
+  logout() {
+    this.authService.logout(); // Cierra sesión en el servicio de autenticación
+    this.router.navigate(['/login']); // Redirige al login
+  }
 }

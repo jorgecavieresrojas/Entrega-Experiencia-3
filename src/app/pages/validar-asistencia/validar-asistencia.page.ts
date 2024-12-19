@@ -1,50 +1,48 @@
-import { Component } from '@angular/core';
-import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
-import { AlertController } from '@ionic/angular';
+import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
+import { MenuController, ToastController } from '@ionic/angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-validar-asistencia',
   templateUrl: './validar-asistencia.page.html',
   styleUrls: ['./validar-asistencia.page.scss'],
 })
-export class ValidarAsistenciaPage {
-  isScanning = false; // Controla el estado del escáner
+export class ValidarAsistenciaPage implements OnInit {
 
-  constructor(private alertController: AlertController) {}
+  constructor(
+    private location: Location,
+    private menucontroller: MenuController,
+    private router: Router,
+    private toastController: ToastController
+  ) { }
 
-  // Método para iniciar el escaneo de códigos QR
-  async validarAsistencia() {
-    // Verificar permisos de cámara
-    const status = await BarcodeScanner.checkPermission({ force: true });
-
-    if (status.granted) {
-      // Habilitar el escáner
-      this.isScanning = true;
-      BarcodeScanner.hideBackground(); // Ocultar la interfaz de la app mientras se escanea
-
-      // Iniciar el escaneo
-      const result = await BarcodeScanner.startScan();
-
-      if (result.hasContent) {
-        this.isScanning = false; // Detener el escáner
-        // Mostrar el contenido del código QR escaneado
-        this.showAlert('Código Escaneado', result.content);
-      }
-    } else {
-      this.showAlert(
-        'Permiso Denegado',
-        'Por favor, habilita el acceso a la cámara para validar la asistencia.'
-      );
-    }
+  ngOnInit() {
   }
 
-  // Mostrar alertas al usuario
-  private async showAlert(header: string, message: string) {
-    const alert = await this.alertController.create({
-      header,
-      message,
-      buttons: ['OK'],
+  // Función para regresar a la página anterior
+  goBack() {
+    this.location.back(); 
+  }
+
+  // Función para mostrar el menú
+  mostrarMenu() {
+    this.menucontroller.open('first'); 
+  }
+
+  // Redirigir a la página de listado de asistentes
+  goToListadoAsistentes() {
+    this.router.navigate(['/listado-asistentes']);
+  }
+
+  // Mostrar mensaje al validar asistencia
+  async validarAsistencia() {
+    const toast = await this.toastController.create({
+      message: 'Aquí debería abrirse la cámara',
+      duration: 2000, // Duración de 2 segundos
+      position: 'bottom',
+      color: 'dark'
     });
-    await alert.present();
+    toast.present();
   }
 }

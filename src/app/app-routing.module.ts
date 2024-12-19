@@ -5,52 +5,53 @@ const routes: Routes = [
   {
     path: '',
     redirectTo: 'login',
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
   {
     path: 'login',
-    loadChildren: () => import('./login/login.module').then(m => m.LoginPageModule)
-  },
-  {
-    path: 'registro',  // Cambiado de 'register' a 'registro'
-    loadChildren: () => import('./pages/registro/registro.module').then(m => m.RegistroPageModule)
-  },
-  {
-    path: 'olvido',
-    loadChildren: () => import('./pages/olvido/olvido.module').then(m => m.OlvidoPageModule)
+    loadChildren: () =>
+      import('./login/login.module').then((m) => m.LoginPageModule),
   },
   {
     path: 'inicio',
-    loadChildren: () => import('./pages/inicio/inicio.module').then(m => m.InicioPageModule)
-  },
-  {
-    path: 'gestion-eventos',
-    loadChildren: () => import('./pages/gestion-eventos/gestion-eventos.module').then( m => m.GestionEventosPageModule)
-  },
-  {
-    path: 'validar-asistencia',
-    loadChildren: () => import('./pages/validar-asistencia/validar-asistencia.module').then( m => m.ValidarAsistenciaPageModule)
-  },
-  {
-    path: 'listado-asistentes',
-    loadChildren: () => import('./pages/listado-asistentes/listado-asistentes.module').then( m => m.ListadoAsistentesPageModule)
+    loadChildren: () =>
+      import('./pages/inicio/inicio.module').then((m) => m.InicioPageModule),
   },
   {
     path: 'creaevento',
-    loadChildren: () => import('./pages/creaevento/creaevento.module').then( m => m.CreaeventoPageModule)
-  },
-  {
-    path: 'editaeliminaevento',
-    loadChildren: () => import('./pages/editaeliminaevento/editaeliminaevento.module').then( m => m.EditaeliminaeventoPageModule)
+    loadChildren: () =>
+      import('./pages/creaevento/creaevento.module').then((m) => m.CreaeventoPageModule),
   },
   {
     path: 'listevent',
-    loadChildren: () => import('./pages/listevent/listevent.module').then( m => m.ListeventPageModule)
-  }
+    loadChildren: () =>
+      import('./pages/listevent/listevent.module').then((m) => m.ListeventPageModule),
+  },
+  
+  { path: 'editaeliminaevento/:id', loadChildren: () => import('./pages/editaeliminaevento/editaeliminaevento.module').then(m => m.EditaeliminaeventoPageModule) },
+  {
+    path: 'qrscanner',
+    loadChildren: () => import('./qrscanner/qrscanner.module').then( m => m.QrscannerPageModule)
+  },
+  {
+    path: 'registro',
+    loadChildren: () =>
+      import('./pages/registro/registro.module').then((m) => m.RegistroPageModule),
+  },
+  {
+    path: 'perfil',
+    loadChildren: () =>
+      import('./pages/perfil/perfil.module').then((m) => m.PerfilPageModule),
+  },
+  {
+    path: 'qrscanner',
+    loadChildren: () =>
+      import('./qrscanner/qrscanner.module').then((m) => m.QrscannerPageModule),
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

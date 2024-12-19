@@ -1,21 +1,28 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-buttons slot="end">
-      <ion-button (click)="mostrarMenu()">
-        <ion-icon slot="end" name="menu-outline" color="dark" size="large"></ion-icon>
-      </ion-button>
+    <!-- Botón para abrir el menú lateral -->
+    <ion-buttons slot="start">
+      <ion-menu-button menu="first"></ion-menu-button>
     </ion-buttons>
+    <!-- Título de la página -->
     <ion-title>Inicio</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <!-- Contenido de la página de inicio -->
-  <p>Bienvenido, {{ username }}!</p>
-</ion-content>
+<ion-content class="ion-padding">
+  <!-- Mensaje de bienvenida dinámico -->
+  <div class="ion-text-center">
+    <h1 *ngIf="username && username !== 'Usuario'; else usuarioDefault">
+      Bienvenido, {{ username }}
+    </h1>
+    <!-- Mensaje por defecto si no se encuentra un usuario autenticado -->
+    <ng-template #usuarioDefault>
+      <h1>Bienvenido, Usuario</h1>
+    </ng-template>
+  </div>
 
-<ion-footer>
-  <ion-card>
-    <ion-img src="assets/image.jpg"></ion-img>
-  </ion-card>
-</ion-footer>
+  <!-- Sección de información adicional -->
+  <div class="ion-margin-top">
+    <p class="ion-text-center">Explora las funcionalidades disponibles desde el menú.</p>
+  </div>
+</ion-content>
